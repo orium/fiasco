@@ -1,0 +1,23 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+package fiasco.cats
+
+import cats.Functor
+import cats.data.EitherT
+import fiasco.{Convert, Failure}
+import scala.language.higherKinds
+
+object syntax {
+  implicit class EitherTOps[F[_], A](eitherT: EitherT[F, Throwable, A]) {
+    def toFailureEitherT(implicit F: Functor[F]): EitherT[F, Failure, A] =
+      eitherT.leftMap(Failure.fromThrowable)
+  }
+
+  implicit class EitherTConvertOps[F[_], E, A](eitherT: EitherT[F, E, A]) {
+    def leftConvert[To](implicit F: Functor[F], convert: Convert[E, To]): EitherT[F, To, A] =
+      eitherT.leftMap(convert.convert)
+  }
+}
