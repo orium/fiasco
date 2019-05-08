@@ -1,0 +1,14 @@
+language: scala
+dist: xenial
+
+os:
+  - linux
+
+jdk:
+  - openjdk8
+
+scala:
+  - 2.12.8
+
+script:
+  - sbt compile test
