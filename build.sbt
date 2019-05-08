@@ -34,18 +34,6 @@ lazy val fiascoCore =
       )
     )
 
-lazy val fiascoLogging3 =
-  (project in file("fiasco-logging-3"))
-    .settings(commonSettings: _*)
-    .settings(
-      name := "fiasco-logging-3",
-
-      libraryDependencies ++= Seq(
-        Dependency.ScalaLogging % Provided
-      )
-    )
-    .dependsOn(fiascoCore % Provided)
-
 lazy val fiascoCats1 =
   (project in file("fiasco-cats-1"))
     .settings(commonSettings: _*)
@@ -53,7 +41,7 @@ lazy val fiascoCats1 =
       name := "fiasco-cats-1",
 
       libraryDependencies ++= Seq(
-        Dependency.Cats % Provided
+        Dependency.Cats1 % Provided
       )
     )
     .dependsOn(fiascoCore % Provided)
@@ -65,7 +53,31 @@ lazy val fiascoCatsEffect1 =
       name := "fiasco-cats-effect-1",
 
       libraryDependencies ++= Seq(
-        Dependency.CatsEffect % Provided
+        Dependency.CatsEffect1 % Provided
+      )
+    )
+    .dependsOn(fiascoCore % Provided)
+
+lazy val fiascoScalazZio1 =
+  (project in file("fiasco-scalaz-zio-1"))
+    .settings(commonSettings: _*)
+    .settings(
+      name := "fiasco-scalaz-zio-1",
+
+      libraryDependencies ++= Seq(
+        Dependency.ScalazZio1 % Provided
+      )
+    )
+    .dependsOn(fiascoCore % Provided)
+
+lazy val fiascoScalaLogging3 =
+  (project in file("fiasco-scala-logging-3"))
+    .settings(commonSettings: _*)
+    .settings(
+      name := "fiasco-scala-logging-3",
+
+      libraryDependencies ++= Seq(
+        Dependency.ScalaLogging3 % Provided
       )
     )
     .dependsOn(fiascoCore % Provided)
@@ -75,7 +87,8 @@ lazy val fiasco =
     .settings(commonSettings: _*)
     .aggregate(
       fiascoCore,
-      fiascoLogging3,
       fiascoCats1,
-      fiascoCatsEffect1
+      fiascoCatsEffect1,
+      fiascoScalazZio1,
+      fiascoScalaLogging3
     )

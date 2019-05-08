@@ -11,7 +11,7 @@ import fiasco.{Convert, Failure}
 import scala.language.higherKinds
 
 object syntax {
-  implicit class EitherTOps[F[_], A](eitherT: EitherT[F, Throwable, A]) {
+  implicit class EitherTOps[F[_], E <: Throwable, A](eitherT: EitherT[F, E, A]) {
     def toFailureEitherT(implicit F: Functor[F]): EitherT[F, Failure, A] =
       eitherT.leftMap(Failure.fromThrowable)
   }

@@ -18,6 +18,7 @@ trait Failure {
         case Some(t) => s"${t.name} (id=${t.id}, priority=${t.priority})"
         case None    => "?"
       }
+
     val thisFailure =
       s"""Failure: $description
          |Thread: $threadInfoString

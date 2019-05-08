@@ -9,7 +9,7 @@ import scala.util.Try
 import scala.util.control.NonFatal
 
 object syntax {
-  implicit class ThrowableOps(throwable: Throwable) {
+  implicit class ThrowableOps[E <: Throwable](throwable: E) {
     def toFailure: Failure = Failure.fromThrowable(throwable)
   }
 
@@ -17,7 +17,7 @@ object syntax {
     def toFailureEither: Either[Failure, A] = t.toEither.toFailureEither
   }
 
-  implicit class EitherOps[A](either: Either[Throwable, A]) {
+  implicit class EitherOps[A, E <: Throwable](either: Either[E, A]) {
     def toFailureEither: Either[Failure, A] = either.left.map(_.toFailure)
   }
 
