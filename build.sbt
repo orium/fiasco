@@ -58,6 +58,18 @@ lazy val fiascoCatsEffect1 =
     )
     .dependsOn(fiascoCore % Provided)
 
+lazy val fiascoScalaz7 =
+  (project in file("fiasco-scalaz-7"))
+    .settings(commonSettings: _*)
+    .settings(
+      name := "fiasco-scalaz-7",
+
+      libraryDependencies ++= Seq(
+        Dependency.Scalaz7 % Provided
+      )
+    )
+    .dependsOn(fiascoCore % Provided)
+
 lazy val fiascoScalazZio1 =
   (project in file("fiasco-scalaz-zio-1"))
     .settings(commonSettings: _*)
@@ -89,6 +101,7 @@ lazy val fiasco =
       fiascoCore,
       fiascoCats1,
       fiascoCatsEffect1,
+      fiascoScalaz7,
       fiascoScalazZio1,
       fiascoScalaLogging3
     )

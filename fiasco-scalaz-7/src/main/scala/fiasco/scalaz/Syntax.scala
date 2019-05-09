@@ -3,11 +3,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package fiasco.cats
+package fiasco.scalaz
 
-import cats.Functor
-import cats.data.EitherT
 import fiasco.{Convert, Failure}
+import scalaz.{EitherT, Functor}
 
 import scala.language.higherKinds
 
