@@ -31,10 +31,10 @@ object syntax {
   }
 
   implicit class AllConvertOps[A](a: A) {
-    def convert[To](implicit convert: Convert[A, To]): To = convert.convert(a)
+    def convert[To](implicit convert: Convert[A, To]): To = Convert[A, To].convert(a)
   }
 
   implicit class EitherConvertOps[A, E](either: Either[E, A]) {
-    def leftConvert[To](implicit convert: Convert[E, To]): Either[To, A] = either.left.map(convert.convert)
+    def leftConvert[To](implicit convert: Convert[E, To]): Either[To, A] = either.left.map(Convert[E, To].convert)
   }
 }

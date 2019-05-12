@@ -19,6 +19,6 @@ object syntax {
 
   implicit class EitherTConvertOps[F[_], E, A](eitherT: EitherT[F, E, A]) {
     def leftConvert[To](implicit F: Functor[F], convert: Convert[E, To]): EitherT[F, To, A] =
-      eitherT.leftMap(convert.convert)
+      eitherT.leftMap(Convert[E, To].convert)
   }
 }

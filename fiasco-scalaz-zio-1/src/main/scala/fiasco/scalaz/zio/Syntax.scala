@@ -16,6 +16,6 @@ object syntax {
 
   implicit class ZIOConvertOps[R, E, A](zio: ZIO[R, E, A]) {
     def leftConvert[To](implicit convert: Convert[E, To]): ZIO[R, To, A] =
-      zio.mapError(convert.convert)
+      zio.mapError(Convert[E, To].convert)
   }
 }
