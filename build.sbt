@@ -1,6 +1,6 @@
 import scala.util.Properties
 
-val Version = "0.0.0" // WIP! use sbt release
+val Version = "0.1.0-SNAPSHOT"
 val ScalaVersion = "2.12.8"
 
 lazy val commonSettings = Seq(
