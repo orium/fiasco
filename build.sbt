@@ -113,3 +113,8 @@ lazy val fiasco =
       fiascoScalazZio1,
       fiascoScalaLogging3
     )
+
+addCommandAlias(
+  "codecov",
+  ";clean; coverage; test; coverageReport; coverageAggregate"
+)

@@ -17,9 +17,6 @@ object syntax {
   implicit class FutureOps[A](future: Future[A]) {
     def attemptFail(implicit executionContext: ExecutionContext): Future[Either[Fail, A]] =
       future.transformWith(t => Future.successful(t.toFailEither))
-
-    def failedFail(implicit executionContext: ExecutionContext): Future[Fail] =
-      future.failed.map(_.toFail)
   }
 
   implicit class FutureObjOps(futureObj: Future.type) {

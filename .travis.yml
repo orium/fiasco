@@ -12,3 +12,9 @@ scala:
 
 script:
   - sbt compile test
+  - sbt codecov
+
+after_success:
+  test "$TRAVIS_OS_NAME" = linux
+  && travis_wait sbt codecov
+  && bash <(curl -s https://codecov.io/bash)
