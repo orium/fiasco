@@ -12,11 +12,11 @@ import fiasco.{Convert, Fail}
 object syntax {
   implicit class IOOps[A](io: IO[A]) {
     def attemptFail: IO[Either[Fail, A]] =
-      io.attempt.map(_.toFailEither)
+      io.attempt.map(_.leftToFail)
   }
 
   implicit class IOObjOps(ioObj: IO.type) {
-    def catchNonFatalFail[A](f: => A): IO[Either[Fail, A]] =
+    def catchNonFatalAsFail[A](f: => A): IO[Either[Fail, A]] =
       IO(f).attemptFail
   }
 

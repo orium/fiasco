@@ -16,7 +16,7 @@ class SyntaxSpec extends FlatSpec with Matchers {
 
   it should "be able to convert a `Throwable` to a `Fail`" in {
     val eitherT: EitherT[Option, Exception, Unit] = EitherT.left(Some(new Exception("this is a test")))
-    val eitherTFail: EitherT[Option, Fail, Unit] = eitherT.toFailEitherT
+    val eitherTFail: EitherT[Option, Fail, Unit] = eitherT.leftToFail
 
     eitherTFail.leftMap(_.description) shouldBe EitherT.left(Option("this is a test"))
   }

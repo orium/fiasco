@@ -7,18 +7,19 @@ package fiasco.cats
 
 import cats.Functor
 import cats.data.EitherT
+import fiasco.syntax._
 import fiasco.{Convert, Fail}
 
 import scala.language.higherKinds
 
 object syntax {
   implicit class EitherTOps[F[_], E <: Throwable, A](eitherT: EitherT[F, E, A]) {
-    def toFailEitherT(implicit F: Functor[F]): EitherT[F, Fail, A] =
+    def leftToFail(implicit F: Functor[F]): EitherT[F, Fail, A] =
       eitherT.leftMap(Fail.fromThrowable)
   }
 
   implicit class EitherTConvertOps[F[_], E, A](eitherT: EitherT[F, E, A]) {
     def leftConvert[To](implicit F: Functor[F], convert: Convert[E, To]): EitherT[F, To, A] =
-      eitherT.leftMap(Convert[E, To].convert)
+      eitherT.leftMap(_.convert)
   }
 }

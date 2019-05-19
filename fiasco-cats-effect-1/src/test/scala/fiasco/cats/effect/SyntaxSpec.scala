@@ -21,7 +21,7 @@ class SyntaxSpec extends FlatSpec with Matchers {
   }
 
   it should "capture an exception and convert it to a fail" in {
-    val io: IO[Either[Fail, Nothing]] = IO.catchNonFatalFail {
+    val io: IO[Either[Fail, Nothing]] = IO.catchNonFatalAsFail {
       throw new Exception("a description")
     }
 
@@ -35,6 +35,6 @@ class SyntaxSpec extends FlatSpec with Matchers {
 
     val effect: IO[Left[RuntimeException, Nothing]] = IO(Left(new RuntimeException("42")))
 
-    effect.leftConvert.unsafeRunSync().left.get shouldBe "42"
+    effect.leftConvert.unsafeRunSync() shouldBe Left("42")
   }
 }

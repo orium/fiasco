@@ -25,7 +25,7 @@ class SyntaxSpec extends FlatSpec with Matchers {
   behavior of "Future extension methods"
 
   it should "convert a failed future into a future of an either" in {
-    val future: Future[Either[Fail, Nothing]] = Future(throw new Exception("a description")).attemptFail
+    val future: Future[Either[Fail, Nothing]] = Future(throw new Exception("a description")).liftFail
     val result: Either[Fail, Nothing] = Await.result(future, Duration.Inf)
 
     result should matchPattern {
@@ -34,7 +34,7 @@ class SyntaxSpec extends FlatSpec with Matchers {
   }
 
   it should "convert a successful future into a future of an either" in {
-    val future: Future[Either[Fail, Int]] = Future(42).attemptFail
+    val future: Future[Either[Fail, Int]] = Future(42).liftFail
     val result: Either[Fail, Int] = Await.result(future, Duration.Inf)
 
     result should matchPattern {
@@ -43,7 +43,7 @@ class SyntaxSpec extends FlatSpec with Matchers {
   }
 
   it should "capture an exception and convert it to a fail" in {
-    val future: Future[Either[Fail, Nothing]] = Future.catchNonFatalFail {
+    val future: Future[Either[Fail, Nothing]] = Future.catchNonFatalAsFail {
       throw new Exception("a description")
     }
     val result: Either[Fail, Int] = Await.result(future, Duration.Inf)
@@ -51,6 +51,15 @@ class SyntaxSpec extends FlatSpec with Matchers {
     result should matchPattern {
       case Left(f: Fail) if f.description == "a description" =>
     }
+  }
+
+  it should "be able to convert the error type" in {
+    implicit val intStringConvert: Convert[RuntimeException, String] = Convert.instance(_.getMessage)
+
+    val future: Future[Left[RuntimeException, Nothing]] = Future.successful(Left(new RuntimeException("42")))
+    val result: Either[String, Nothing] = Await.result(future.leftConvert, Duration.Inf)
+
+    result shouldBe Left("42")
   }
 
   behavior of "Try extension methods"
@@ -72,7 +81,7 @@ class SyntaxSpec extends FlatSpec with Matchers {
   behavior of "Either extension methods"
 
   it should "convert a left either into a either" in {
-    val t: Either[Fail, Nothing] = Left(new Exception("a description")).toFailEither
+    val t: Either[Fail, Nothing] = Left(new Exception("a description")).leftToFail
 
     t should matchPattern {
       case Left(f: Fail) if f.description == "a description" =>
@@ -80,13 +89,13 @@ class SyntaxSpec extends FlatSpec with Matchers {
   }
 
   it should "convert a right either into a either" in {
-    val t: Either[Fail, Int] = Right(42).toFailEither
+    val t: Either[Fail, Int] = Right(42).leftToFail
 
     t shouldBe Right(42)
   }
 
   it should "capture an exception and convert it to a fail" in {
-    val either: Either[Fail, Nothing] = Either.catchNonFatalFail {
+    val either: Either[Fail, Nothing] = Either.catchNonFatalAsFail {
       throw new Exception("a description")
     }
 
