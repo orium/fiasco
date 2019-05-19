@@ -6,12 +6,22 @@
 package fiasco.cats.effect
 
 import cats.effect.IO
-import fiasco.Failure
 import fiasco.syntax._
+import fiasco.{Convert, Fail}
 
 object syntax {
   implicit class IOOps[A](io: IO[A]) {
-    def attemptFailure: IO[Either[Failure, A]] =
-      io.attempt.map(_.toFailureEither)
+    def attemptFail: IO[Either[Fail, A]] =
+      io.attempt.map(_.toFailEither)
+  }
+
+  implicit class IOObjOps(ioObj: IO.type) {
+    def catchNonFatalFail[A](f: => A): IO[Either[Fail, A]] =
+      IO(f).attemptFail
+  }
+
+  implicit class IOConvertOps[E, A](io: IO[Either[E, A]]) {
+    def leftConvert[To](implicit convert: Convert[E, To]): IO[Either[To, A]] =
+      io.map(_.leftConvert)
   }
 }

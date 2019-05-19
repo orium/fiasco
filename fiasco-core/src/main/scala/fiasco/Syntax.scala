@@ -5,28 +5,42 @@
 
 package fiasco
 
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
 import scala.util.control.NonFatal
 
 object syntax {
   implicit class ThrowableOps[E <: Throwable](throwable: E) {
-    def toFailure: Failure = Failure.fromThrowable(throwable)
+    def toFail: Fail = Fail.fromThrowable(throwable)
+  }
+
+  implicit class FutureOps[A](future: Future[A]) {
+    def attemptFail(implicit executionContext: ExecutionContext): Future[Either[Fail, A]] =
+      future.transformWith(t => Future.successful(t.toFailEither))
+
+    def failedFail(implicit executionContext: ExecutionContext): Future[Fail] =
+      future.failed.map(_.toFail)
+  }
+
+  implicit class FutureObjOps(futureObj: Future.type) {
+    def catchNonFatalFail[A](f: => A)(implicit executionContext: ExecutionContext): Future[Either[Fail, A]] =
+      Future(f).attemptFail
   }
 
   implicit class TryOps[A](t: Try[A]) {
-    def toFailureEither: Either[Failure, A] = t.toEither.toFailureEither
+    def toFailEither: Either[Fail, A] = t.toEither.toFailEither
   }
 
   implicit class EitherOps[A, E <: Throwable](either: Either[E, A]) {
-    def toFailureEither: Either[Failure, A] = either.left.map(_.toFailure)
+    def toFailEither: Either[Fail, A] = either.left.map(_.toFail)
   }
 
   implicit class EitherObjOps(eitherObj: Either.type) {
-    def catchNonFatalFailure[A](f: => A): Either[Failure, A] =
+    def catchNonFatalFail[A](f: => A): Either[Fail, A] =
       try {
         Right(f)
       } catch {
-        case NonFatal(t) => Left(t.toFailure)
+        case NonFatal(t) => Left(t.toFail)
       }
   }
 

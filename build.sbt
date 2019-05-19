@@ -41,7 +41,9 @@ lazy val fiascoCats1 =
       name := "fiasco-cats-1",
 
       libraryDependencies ++= Seq(
-        Dependency.Cats1 % Provided
+        Dependency.Cats1 % Provided,
+
+        Dependency.ScalaTest % Test
       )
     )
     .dependsOn(fiascoCore % Provided)
@@ -53,7 +55,9 @@ lazy val fiascoCatsEffect1 =
       name := "fiasco-cats-effect-1",
 
       libraryDependencies ++= Seq(
-        Dependency.CatsEffect1 % Provided
+        Dependency.CatsEffect1 % Provided,
+
+        Dependency.ScalaTest % Test
       )
     )
     .dependsOn(fiascoCore % Provided)
@@ -65,7 +69,9 @@ lazy val fiascoScalaz7 =
       name := "fiasco-scalaz-7",
 
       libraryDependencies ++= Seq(
-        Dependency.Scalaz7 % Provided
+        Dependency.Scalaz7 % Provided,
+
+        Dependency.ScalaTest % Test
       )
     )
     .dependsOn(fiascoCore % Provided)
@@ -77,7 +83,9 @@ lazy val fiascoScalazZio1 =
       name := "fiasco-scalaz-zio-1",
 
       libraryDependencies ++= Seq(
-        Dependency.ScalazZio1 % Provided
+        Dependency.ScalazZio1 % Provided,
+
+        Dependency.ScalaTest % Test
       )
     )
     .dependsOn(fiascoCore % Provided)

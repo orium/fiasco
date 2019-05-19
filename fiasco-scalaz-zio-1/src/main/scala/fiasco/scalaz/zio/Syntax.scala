@@ -5,17 +5,17 @@
 
 package fiasco.scalaz.zio
 
-import fiasco.{Convert, Failure}
+import fiasco.{Convert, Fail}
 import scalaz.zio.ZIO
 
 object syntax {
   implicit class ZIOOps[R, E <: Throwable, A](zio: ZIO[R, E, A]) {
-    def toFailureZIO: ZIO[R, Failure, A] =
-      zio.mapError(Failure.fromThrowable)
+    def toFailZIO: ZIO[R, Fail, A] =
+      zio.mapError(Fail.fromThrowable)
   }
 
   implicit class ZIOConvertOps[R, E, A](zio: ZIO[R, E, A]) {
-    def leftConvert[To](implicit convert: Convert[E, To]): ZIO[R, To, A] =
+    def errorConvert[To](implicit convert: Convert[E, To]): ZIO[R, To, A] =
       zio.mapError(Convert[E, To].convert)
   }
 }
