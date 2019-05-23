@@ -16,8 +16,6 @@ final case class Stacktrace(stackframes: Seq[StackTraceElement]) extends Travers
 }
 
 object Stacktrace {
-  def current(): Stacktrace = {
-    val e = new Exception
-    Stacktrace(e.getStackTrace.toSeq).dropFirst
-  }
+  def current(): Stacktrace =
+    Stacktrace(Thread.currentThread().getStackTrace().toSeq).dropFirst.dropFirst
 }
