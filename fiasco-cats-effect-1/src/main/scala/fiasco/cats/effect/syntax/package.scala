@@ -9,7 +9,7 @@ import cats.effect.IO
 import fiasco.syntax._
 import fiasco.{Convert, Fail}
 
-object syntax {
+package object syntax {
   implicit class IOOps[A](io: IO[A]) {
     def attemptFail: IO[Either[Fail, A]] =
       io.attempt.map(_.leftToFail)

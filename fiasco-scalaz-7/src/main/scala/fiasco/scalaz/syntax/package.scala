@@ -3,16 +3,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package fiasco.cats
+package fiasco.scalaz
 
-import cats.Functor
-import cats.data.EitherT
 import fiasco.syntax._
 import fiasco.{Convert, Fail}
+import scalaz.{EitherT, Functor}
 
 import scala.language.higherKinds
 
-object syntax {
+package object syntax {
   implicit class EitherTOps[F[_], E <: Throwable, A](eitherT: EitherT[F, E, A]) {
     def leftToFail(implicit F: Functor[F]): EitherT[F, Fail, A] =
       eitherT.leftMap(Fail.fromThrowable)

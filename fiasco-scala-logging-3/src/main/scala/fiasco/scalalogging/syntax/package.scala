@@ -9,7 +9,7 @@ import com.typesafe.scalalogging.Logger
 import fiasco.Fail
 import org.slf4j.Marker
 
-object syntax {
+package object syntax {
   implicit class LoggerOps(logger: Logger) {
     def error(message: String, cause: Fail): Unit =
       logger.error(s"$message\n${cause.fullToString}")

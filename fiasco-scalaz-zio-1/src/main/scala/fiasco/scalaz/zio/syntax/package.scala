@@ -9,7 +9,7 @@ import fiasco.syntax._
 import fiasco.{Convert, Fail}
 import scalaz.zio.ZIO
 
-object syntax {
+package object syntax {
   implicit class ZIOOps[R, E <: Throwable, A](zio: ZIO[R, E, A]) {
     def errorToFail: ZIO[R, Fail, A] =
       zio.mapError(Fail.fromThrowable)

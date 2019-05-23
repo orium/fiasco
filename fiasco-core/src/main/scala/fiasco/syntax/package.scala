@@ -9,7 +9,7 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
 import scala.util.control.NonFatal
 
-object syntax {
+package object syntax {
   implicit class ThrowableOps[E <: Throwable](throwable: E) {
     def toFail: Fail = Fail.fromThrowable(throwable)
   }
