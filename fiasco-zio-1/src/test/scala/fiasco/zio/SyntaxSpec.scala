@@ -3,12 +3,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package fiasco.scalaz.zio
+package fiasco.zio
 
+import fiasco.zio.syntax._
 import fiasco.{Convert, Fail}
 import org.scalatest.{FlatSpec, Matchers}
-import scalaz.zio.{DefaultRuntime, Task, ZIO}
-import fiasco.scalaz.zio.syntax._
+import scalaz.zio.{DefaultRuntime, ZIO}
 
 class SyntaxSpec extends FlatSpec with Matchers {
   private val runtime: DefaultRuntime = new DefaultRuntime {}

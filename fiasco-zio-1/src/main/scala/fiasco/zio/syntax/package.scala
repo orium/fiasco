@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package fiasco.scalaz.zio
+package fiasco.zio
 
 import fiasco.syntax._
 import fiasco.{Convert, Fail}

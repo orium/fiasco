@@ -9,6 +9,9 @@ lazy val commonSettings = Seq(
   organization := "fiasco",
   version := Version,
 
+  homepage := Some(url("https://github.com/orium/fiasco/")),
+  licenses := List("MPL-2.0" -> url("https://www.mozilla.org/en-US/MPL/2.0/")),
+
   scalacOptions ++= {
     Seq(
       "-deprecation",
@@ -76,14 +79,14 @@ lazy val fiascoScalaz7 =
     )
     .dependsOn(fiascoCore % Provided)
 
-lazy val fiascoScalazZio1 =
-  (project in file("fiasco-scalaz-zio-1"))
+lazy val fiascoZio1 =
+  (project in file("fiasco-zio-1"))
     .settings(commonSettings: _*)
     .settings(
-      name := "fiasco-scalaz-zio-1",
+      name := "fiasco-zio-1",
 
       libraryDependencies ++= Seq(
-        Dependency.ScalazZio1 % Provided,
+        Dependency.Zio1 % Provided,
 
         Dependency.ScalaTest % Test
       )
@@ -110,7 +113,7 @@ lazy val fiasco =
       fiascoCats1,
       fiascoCatsEffect1,
       fiascoScalaz7,
-      fiascoScalazZio1,
+      fiascoZio1,
       fiascoScalaLogging3
     )
 
