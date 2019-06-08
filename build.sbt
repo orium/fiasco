@@ -12,6 +12,18 @@ lazy val commonSettings = Seq(
   homepage := Some(url("https://github.com/orium/fiasco/")),
   licenses := List("MPL-2.0" -> url("https://www.mozilla.org/en-US/MPL/2.0/")),
 
+  scmInfo := Some(ScmInfo(
+    url("https://github.com/orium/fiasco"),
+    "scm:git@github.com:orium/fiasco.git"
+  )),
+
+  developers := List(Developer(
+    id    = "orium",
+    name  = "Diogo Sousa",
+    email = "diogogsousa@gmail.com",
+    url   = url("https://github.com/orium")
+  )),
+
   scalacOptions ++= {
     Seq(
       "-deprecation",
@@ -23,7 +35,9 @@ lazy val commonSettings = Seq(
         case false => Seq.empty
       }
     }
-  }
+  },
+
+  resolvers += Resolver.bintrayRepo("orium", "maven")
 )
 
 lazy val fiascoCore =
@@ -108,7 +122,9 @@ lazy val fiascoScalaLogging3 =
 lazy val fiasco =
   (project in file("."))
     .settings(commonSettings: _*)
-    .aggregate(
+    .settings(
+      skip in publish := true
+    ).aggregate(
       fiascoCore,
       fiascoCats1,
       fiascoCatsEffect1,
