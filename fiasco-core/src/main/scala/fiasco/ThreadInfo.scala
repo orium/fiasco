@@ -5,12 +5,21 @@
 
 package fiasco
 
+/**
+ * Information about a thread.
+ */
 final case class ThreadInfo(id: Long, name: String, priority: Int)
 
 object ThreadInfo {
+  /**
+   * Creates a [[fiasco.ThreadInfo ThreadInfo]] of the given thread.
+   */
   def apply(thread: Thread): ThreadInfo =
     ThreadInfo(thread.getId(), thread.getName(), thread.getPriority())
 
+  /**
+   * Obtains the [[fiasco.ThreadInfo ThreadInfo]] of the current thread.
+   */
   def current(): ThreadInfo =
     ThreadInfo(Thread.currentThread())
 }

@@ -5,13 +5,35 @@
 
 package fiasco
 
+/**
+ * A trait for errors.  Errors extending this trait will have contextual information for free.
+ *
+ * WIP! mini readme here.
+ */
 trait Fail {
+  /**
+   * A human-readable description of this error.
+   */
   def description: String
+
+  /**
+   * The cause this error.
+   */
   def cause: Option[Fail] = None
 
+  /**
+   * The thread information at the moment the error was created.
+   */
   val threadInfo: Option[ThreadInfo] = Some(ThreadInfo.current())
+
+  /**
+   * The stacktrace at the moment the error was created.
+   */
   val stacktrace: Stacktrace = Stacktrace.current()
 
+  /**
+   * A pretty-print string representing all the information about this error.
+   */
   def fullToString: String = {
     val threadInfoString =
       threadInfo match {
@@ -35,6 +57,11 @@ trait Fail {
     }
   }
 
+  /**
+   * Creates an exception with as much information about this error as possible.
+   *
+   * Note that some information will be lost in the exception.
+   */
   def toException: Exception = {
     val e = new Exception(description)
 
@@ -48,6 +75,9 @@ trait Fail {
 }
 
 object Fail {
+  /**
+   * Creates an opaque [[fiasco.Fail Fail]] with the given description.
+   */
   def make(description: String): Fail = {
     val d = description
     val s = Stacktrace.current().dropFirst
@@ -58,6 +88,9 @@ object Fail {
     }
   }
 
+  /**
+   * Creates an opaque [[fiasco.Fail Fail]] with the given description and cause.
+   */
   def make(description: String, cause: Fail): Fail = {
     val d = description
     val c = cause
@@ -70,6 +103,9 @@ object Fail {
     }
   }
 
+  /**
+   * Creates a [[fiasco.Fail Fail]] for the given [[Throwable]].
+   */
   def fromThrowable(t: Throwable): Fail = new Fail {
     override def description: String =
       Option(t.getMessage)

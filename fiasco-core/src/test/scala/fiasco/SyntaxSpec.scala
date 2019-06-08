@@ -25,7 +25,7 @@ class SyntaxSpec extends FlatSpec with Matchers {
   behavior of "Future extension methods"
 
   it should "convert a failed future into a future of an either" in {
-    val future: Future[Either[Fail, Nothing]] = Future(throw new Exception("a description")).liftFail
+    val future: Future[Either[Fail, Nothing]] = Future(throw new Exception("a description")).attemptFail
     val result: Either[Fail, Nothing] = Await.result(future, Duration.Inf)
 
     result should matchPattern {
@@ -34,7 +34,7 @@ class SyntaxSpec extends FlatSpec with Matchers {
   }
 
   it should "convert a successful future into a future of an either" in {
-    val future: Future[Either[Fail, Int]] = Future(42).liftFail
+    val future: Future[Either[Fail, Int]] = Future(42).attemptFail
     val result: Either[Fail, Int] = Await.result(future, Duration.Inf)
 
     result should matchPattern {
@@ -65,7 +65,7 @@ class SyntaxSpec extends FlatSpec with Matchers {
   behavior of "Try extension methods"
 
   it should "convert a failed try into a either" in {
-    val t: Either[Fail, Nothing] = Try(throw new Exception("a description")).toFailEither
+    val t: Either[Fail, Nothing] = Try(throw new Exception("a description")).toEitherFail
 
     t should matchPattern {
       case Left(f: Fail) if f.description == "a description" =>
@@ -73,7 +73,7 @@ class SyntaxSpec extends FlatSpec with Matchers {
   }
 
   it should "convert a successful try into a either" in {
-    val t: Either[Fail, Int] = Try(42).toFailEither
+    val t: Either[Fail, Int] = Try(42).toEitherFail
 
     t shouldBe Right(42)
   }

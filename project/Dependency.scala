@@ -2,7 +2,7 @@ import sbt._
 
 object Dependency {
   private object Version {
-    val Cats1         = "1.6.0"
+    val Cats1         = "1.6.1"
     val CatsEffect1   = "1.3.1"
     val Scalaz7       = "7.2.27"
     val Zio1          = "1.0-RC5"

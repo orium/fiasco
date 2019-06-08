@@ -13,11 +13,17 @@ import scala.language.higherKinds
 
 package object syntax {
   implicit class EitherTOps[F[_], E <: Throwable, A](eitherT: EitherT[F, E, A]) {
+    /**
+     * Convert the left value from a [[Throwable]] to a [[fiasco.Fail Fail]].
+     */
     def leftToFail(implicit F: Functor[F]): EitherT[F, Fail, A] =
       eitherT.leftMap(Fail.fromThrowable)
   }
 
   implicit class EitherTConvertOps[F[_], E, A](eitherT: EitherT[F, E, A]) {
+    /**
+     * Convert the left value to `To`.
+     */
     def leftConvert[To](implicit F: Functor[F], convert: Convert[E, To]): EitherT[F, To, A] =
       eitherT.leftMap(_.convert)
   }
